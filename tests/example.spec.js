@@ -80,7 +80,17 @@ const TestCase = async (startIndex = 2) => {
     await page1.getByText("Overview").waitFor();
     await page1.getByText("Overview").click();
     await delayOneSecond(2000);
-    await page1.close();
+    for (let index = 0; index < 5; index++) {
+      if (i % 2 == 0) {
+        await delayOneSecond(2000);
+        await page1.mouse.wheel(0, 650);
+      }
+
+      if (i % 2 !== 0) {
+        await delayOneSecond(2000);
+        await page1.mouse.wheel(0, -650);
+      }
+    }
   }
 };
 
@@ -99,17 +109,32 @@ const TestCaseMobile = async (startIndex = 2) => {
     await page1.waitForLoadState();
 
     // Search name On Google
-    await page1.getByRole("textbox", { name: "Google Search" }).waitFor();
-    await page1.getByRole("textbox", { name: "Google Search" }).click();
+    await page1.getByRole("textbox", { name: "Penelusuran Google" }).waitFor();
+    await page1.getByRole("textbox", { name: "Penelusuran Google" }).click();
     await delayOneSecond(1000);
     await page1
-      .getByRole("textbox", { name: "Google Search" })
+      .getByRole("textbox", { name: "Penelusuran Google" })
       .type("Toolplate");
     await delayOneSecond(1000);
-    await page1.getByRole("textbox", { name: "Google Search" }).press("Enter");
+    await page1
+      .getByRole("textbox", { name: "Penelusuran Google" })
+      .press("Enter");
     await delayOneSecond(1000);
 
     await page1.waitForLoadState();
+
+    while (
+      !(await page1
+        .getByRole("link", {
+          name: "Toolplate.ai- A Comprehensive Ai Tools Directory",
+          exact: true,
+        })
+        .isVisible())
+    ) {
+      await page1.mouse.wheel(0, 600);
+      await delayOneSecond(1000);
+    }
+
     // Search name On Google
     await page1
       .getByRole("link", {
