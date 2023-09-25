@@ -40,11 +40,11 @@ module.exports = defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
-    // {
-    //   name: "chromium",
-    //   use: { ...devices["Desktop Chrome"] },
-    //   fullyParallel: true,
-    // },
+    {
+      name: "chromium",
+      use: { ...devices["Desktop Chrome"] },
+      fullyParallel: true,
+    },
     // {
     //   name: 'firefox',
     //   use: { ...devices['Desktop Firefox'] },
