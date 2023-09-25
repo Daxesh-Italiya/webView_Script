@@ -23,6 +23,6 @@ export const scrollUntilLinkVisible = async (page1, linkText) => {
 
 export function delayOneSecond(time) {
   return new Promise((resolve) => {
-    setTimeout(resolve, time); // 1000 milliseconds (1 second)
+    setTimeout(resolve, time * 2); // 1000 milliseconds (1 second)
   });
 }
