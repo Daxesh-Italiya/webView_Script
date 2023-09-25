@@ -40,11 +40,11 @@ module.exports = defineConfig({
 
   /* Configure projects for major browsers */
   projects: [
-    {
-      name: "chromium",
-      use: { ...devices["Desktop Chrome"] },
-      fullyParallel: true,
-    },
+    // {
+    //   name: "chromium",
+    //   use: { ...devices["Desktop Chrome"] },
+    //   fullyParallel: true,
+    // },
     // {
     //   name: 'firefox',
     //   use: { ...devices['Desktop Firefox'] },
@@ -54,11 +54,11 @@ module.exports = defineConfig({
     //   use: { ...devices["Desktop Chrome"] },
     // },
     /* Test against mobile viewports. */
-    // {
-    //   name: "Mobile Chrome",
-    //   use: { ...devices["Pixel 5"] },
-    //   fullyParallel: true,
-    // },
+    {
+      name: "Mobile Chrome",
+      use: { ...devices["Pixel 5"] },
+      fullyParallel: true,
+    },
     // {
     //   name: "Mobile Safari",
     //   use: { ...devices["iPhone 12"] },

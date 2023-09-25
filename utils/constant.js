@@ -1,6 +1,7 @@
-// const ActiveCountry = "other";
 const ActiveCountry = "other";
+// const ActiveCountry = "europe";
 const ActiveKeyword = "toolplate";
+// const ActiveKeyword = "toolPlateAiDirectory";
 
 const keyWordsRelation = {
   toolplateAi: {
@@ -32,6 +33,11 @@ const country = {
     GoogleUrl: "https://www.google.com/",
     MobileGoogleSearchText: "Google Search",
     webGoogleSearchText: "Search",
+  },
+  europe: {
+    GoogleUrl: "https://www.google.com/",
+    MobileGoogleSearchText: "Google Buscar",
+    webGoogleSearchText: "Buscar",
   },
 };
 
