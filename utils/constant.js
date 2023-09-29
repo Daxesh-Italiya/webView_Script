@@ -1,7 +1,11 @@
 const ActiveCountry = "other";
-// const ActiveCountry = "europe";
-const ActiveKeyword = "toolplate";
-// const ActiveKeyword = "toolPlateAiDirectory";
+const ActiveKeyword = "toolPlateAiDirectory";
+
+// Mode
+export const activeMode = "mobile"; //Run in mobile
+// export const activeMode = "desktop" //Run in Desktop
+
+export const Delay = 1000;
 
 const keyWordsRelation = {
   toolplateAi: {
@@ -16,7 +20,13 @@ const keyWordsRelation = {
       "Toolplate.ai- A Comprehensive Ai Tools Directory Toolplate.ai https://toolplate.ai",
   },
   toolPlateAiDirectory: {
-    searchKeyword: "toolplate ai directory",
+    searchKeyword: "Toolplate ai Tools Directory",
+    linkText: "Toolplate.ai- A Comprehensive Ai Tools Directory",
+    webLinkText:
+      "Toolplate.ai- A Comprehensive Ai Tools Directory Toolplate.ai https://toolplate.ai",
+  },
+  toolPlateAiDirectory: {
+    searchKeyword: "Toolplate ai A Comprehensive Ai Tools Directory",
     linkText: "Toolplate.ai- A Comprehensive Ai Tools Directory",
     webLinkText:
       "Toolplate.ai- A Comprehensive Ai Tools Directory Toolplate.ai https://toolplate.ai",

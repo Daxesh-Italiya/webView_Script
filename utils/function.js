@@ -1,9 +1,15 @@
-import { delayOneSecond, scroll } from "./helper-function";
+import { Delay } from "./constant";
+import {
+  delayInMillisecond,
+  scroll,
+  scroll_Till_end_view,
+  scroll_Till_targeted_view,
+} from "./helper-function";
 
 export const openSite = async (page1, url) => {
   await page1.goto(url);
   await page1.waitForLoadState();
-  await delayOneSecond(1500);
+  await delayInMillisecond(Delay * 1.5);
 };
 
 export const SearchName = async (
@@ -15,12 +21,12 @@ export const SearchName = async (
   await page1.getByRole(searchType, { name: SearchText }).isVisible();
   await page1.getByRole(searchType, { name: SearchText }).waitFor();
   await page1.getByRole(searchType, { name: SearchText }).click();
-  await delayOneSecond(1000);
+  await delayInMillisecond(Delay);
   await page1.getByRole(searchType, { name: SearchText }).type(searchKeyword);
-  await delayOneSecond(1000);
+  await delayInMillisecond(Delay);
   await page1.getByRole(searchType, { name: SearchText }).press("Enter");
   await page1.waitForLoadState();
-  await delayOneSecond(1000);
+  await delayInMillisecond(Delay);
 };
 
 export const OpenLink = async (page1, link) => {
@@ -37,20 +43,20 @@ export const OpenLink = async (page1, link) => {
     })
     .click();
   await page1.waitForLoadState();
-  await delayOneSecond(1000);
+  await delayInMillisecond(Delay);
 };
 
 export const OpenTool = async (page1) => {
-  await delayOneSecond(1000);
+  await delayInMillisecond(Delay);
 
   await page1.getByRole("link", { name: "Tools" }).waitFor();
   await page1.getByRole("link", { name: "Tools" }).click();
   await page1.waitForLoadState();
-  await delayOneSecond(1000);
+  await delayInMillisecond(Delay);
 };
 
 export const OpenToolFromToggleMenu = async (page1) => {
-  await delayOneSecond(1000);
+  await delayInMillisecond(Delay);
   await page1.waitForLoadState();
   await page1.getByRole("button", { name: "Toggle navigation" }).isVisible();
   // await page1.getByRole("button", { name: "Toggle navigation" }).waitFor();
@@ -60,16 +66,16 @@ export const OpenToolFromToggleMenu = async (page1) => {
 };
 
 export const OpenBlogs = async (page1) => {
-  await delayOneSecond(1000);
+  await delayInMillisecond(Delay);
 
   await page1.getByRole("link", { name: "Blogs" }).waitFor();
   await page1.getByRole("link", { name: "Blogs" }).click();
   await page1.waitForLoadState();
-  await delayOneSecond(1000);
+  await delayInMillisecond(Delay);
 };
 
 export const OpenBlogFromToggleMenu = async (page1) => {
-  await delayOneSecond(1000);
+  await delayInMillisecond(Delay);
   await page1.waitForLoadState();
   await page1.getByRole("button", { name: "Toggle navigation" }).isVisible();
   // await page1.getByRole("button", { name: "Toggle navigation" }).waitFor();
@@ -88,7 +94,7 @@ export const FindDivAndOpen = async (page1, divID) => {
   // Open Tool
   await page1.locator(divID).click();
   await page1.waitForLoadState();
-  await delayOneSecond(2000);
+  await delayInMillisecond(Delay * 2);
 };
 
 export const FindBlogDivAndOpen = async (page1, divID) => {
@@ -99,32 +105,28 @@ export const FindBlogDivAndOpen = async (page1, divID) => {
   // Open Tool
   await page1.locator(divID).click();
   await page1.waitForLoadState();
-  await delayOneSecond(2000);
+  await delayInMillisecond(Delay * 2);
 };
 
 export const EngagementAction = async (page1) => {
-  await scroll(page1, 650);
+  // await scroll(page1, 650);
+  await scroll_Till_targeted_view(
+    page1.getByText("Ratings", { exact: true }).waitFor()
+  );
 
-  await delayOneSecond(2000);
+  await delayInMillisecond(Delay * 2);
   await page1.getByText("Ratings", { exact: true }).waitFor();
   await page1.getByText("Ratings", { exact: true }).click();
-  await delayOneSecond(3000);
+  await delayInMillisecond(Delay * 3);
   await page1.getByText("Overview").waitFor();
   await page1.getByText("Overview").click();
-  await delayOneSecond(2000);
-  for (let i = 0; i < 5; i++) {
-    if (i % 2 == 0) {
-      await scroll(page1, 650);
-    }
+  await delayInMillisecond(Delay * 2);
+  await scroll_Till_end_view(page1);
+  await delayInMillisecond(Delay * 5);
 
-    if (i % 2 !== 0) {
-      await scroll(page1, -650);
-    }
-  }
-
-  setTimeout(async () => {
-    await page1.close();
-  }, 5 * 6 * 1000);
+  // setTimeout(async () => {
+  //   await page1.close();
+  // }, 5 * 6 * 1000);
 };
 
 export const BlogEngagementAction = async (page1) => {

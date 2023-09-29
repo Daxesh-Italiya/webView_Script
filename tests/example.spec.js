@@ -1,6 +1,6 @@
 // // @ts-check
 const { chromium, default: test } = require("@playwright/test");
-const { CONSTANT } = require("../utils/constant");
+const { CONSTANT, Delay, activeMode } = require("../utils/constant");
 const {
   FindDivAndOpen,
   EngagementAction,
@@ -15,8 +15,59 @@ const {
 } = require("../utils/function");
 const {
   scrollUntilLinkVisible,
-  delayOneSecond,
+  delayInMillisecond,
+  scroll,
+  scrollUp,
+  getRandomNumber,
 } = require("../utils/helper-function");
+
+const TestCaseMobile = async (startIndex = 2) => {
+  const browser = await chromium.launchPersistentContext(
+    "/Users/dax/Library/Application Support/Google/Chrome/Default",
+    {
+      executablePath:
+        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+    }
+  );
+  // const browser = await chromium.launch({
+  //   headless: false,
+  // });
+
+  for (let i = startIndex; i <= 81; i++) {
+    // Open New Page
+    const page1 = await browser.newPage();
+    await delayInMillisecond(Delay);
+
+    // Open Google
+    await openSite(page1, CONSTANT.GoogleUrl);
+
+    // Search name On Google
+    await SearchName(
+      page1,
+      CONSTANT.MobileGoogleSearchText,
+      CONSTANT.searchKeyword,
+      "textbox"
+    );
+
+    // Find Toolplate
+    await scrollUntilLinkVisible(page1, CONSTANT.linkText);
+
+    // Search name On Google
+    await OpenLink(page1, CONSTANT.linkText);
+
+    // Open Navigator
+    await OpenToolFromToggleMenu(page1);
+
+    // Scroll Till Tool Appear
+    await FindDivAndOpen(
+      page1,
+      `div:nth-child(${i}) > .tw-bg-inherit > .card-body`
+    );
+
+    // Page Engagement
+    await EngagementAction(page1);
+  }
+};
 
 const TestCase = async (startIndex = 2) => {
   const browser = await chromium.launchPersistentContext(
@@ -29,7 +80,7 @@ const TestCase = async (startIndex = 2) => {
   for (let i = startIndex; i <= 81; i++) {
     // Open New Page
     const page1 = await browser.newPage();
-    await delayOneSecond(1000);
+    await delayInMillisecond(Delay);
 
     // Open Google
     await openSite(page1, CONSTANT.GoogleUrl);
@@ -73,7 +124,7 @@ const BlogTestCase = async (startIndex = 2) => {
   for (let i = startIndex; i <= 81; i++) {
     // Open New Page
     const page1 = await browser.newPage();
-    await delayOneSecond(1000);
+    await delayInMillisecond(Delay);
 
     // Open Google
     await openSite(page1, CONSTANT.GoogleUrl);
@@ -107,7 +158,7 @@ const BlogTestCase = async (startIndex = 2) => {
   }
 };
 
-const TestCaseMobile = async (startIndex = 2) => {
+const TestCaseMobile_engagementTime = async (startIndex = 2) => {
   const browser = await chromium.launchPersistentContext(
     "/Users/dax/Library/Application Support/Google/Chrome/Default",
     {
@@ -122,7 +173,7 @@ const TestCaseMobile = async (startIndex = 2) => {
   for (let i = startIndex; i <= 81; i++) {
     // Open New Page
     const page1 = await browser.newPage();
-    await delayOneSecond(1000);
+    await delayInMillisecond(Delay);
 
     // Open Google
     await openSite(page1, CONSTANT.GoogleUrl);
@@ -141,40 +192,65 @@ const TestCaseMobile = async (startIndex = 2) => {
     // Search name On Google
     await OpenLink(page1, CONSTANT.linkText);
 
-    // Open Navigator
-    await OpenToolFromToggleMenu(page1);
-
-    // Scroll Till Tool Appear
-    await FindDivAndOpen(
-      page1,
-      `div:nth-child(${i}) > .tw-bg-inherit > .card-body`
-    );
-
     // Page Engagement
-    await EngagementAction(page1);
+
+    let stopLoop = false;
+
+    // Function to stop the loop
+    function stopAfterThreeMinutes() {
+      stopLoop = true;
+    }
+
+    // Start the loop
+    const startTime = Date.now();
+    const timer = getRandomNumber(3, 5) * 60 * 1000;
+
+    // while (!stopLoop) {
+    //   if (Date.now() - startTime >= timer) {
+    //     stopAfterThreeMinutes();
+    //   }
+    //   if (getRandomNumber(10, 1000) % 4) {
+    //     await scrollUp(page1);
+    //   } else {
+    //     await scroll(page1);
+    //   }
+    // }
+
+    let showMoreButton;
+    while (true) {
+      // Try to find the 'Show More Blogs' button
+      showMoreButton = await page1.$(
+        'button[role="button"][name="Show More Blogs"]'
+      );
+
+      // If the button is not found, break out of the loop
+      if (!showMoreButton) {
+        break;
+      }
+
+      // Scroll to the element to make it visible
+      await showMoreButton.scrollIntoViewIfNeeded();
+
+      // You may need to adjust the timing here based on your website's behavior
+      // and how fast the 'Show More Blogs' button loads new content
+      await page1.waitForTimeout(1000); // Wait for 1 second before checking again
+    }
   }
 };
 
-// Mobile
-test("has title", async () => TestCaseMobile(30));
-test("has title 2", async () => TestCaseMobile(8));
-test("has title 3", async () => TestCaseMobile(40));
-test("has title 4", async () => TestCaseMobile(42));
-test("has title 5", async () => TestCaseMobile(48));
-test("has title 6", async () => TestCaseMobile(50));
-// test("has title 7", async () => TestCaseMobile(60));
-// test("has title 8", async () => TestCaseMobile(60));
-// test("has title 9", async () => TestCaseMobile(60));
-// test("has title 10", async () => TestCaseMobile(60));
+const RunningMod = {
+  mobile: TestCaseMobile,
+  desktop: TestCase,
+};
 
-// Web
-// test("Web has title", async () => TestCase(2));
-// test("Web has title 2", async () => TestCase(8));
-// test("Web has title 3", async () => TestCase(5));
-// test("Web has title 4", async () => TestCase(8));
-// test("Web has title 5", async () => TestCase(6));
-// test("Web has title 6", async () => TestCase(3));
-// test("Web has title 7", async () => TestCase(5));
-// test("Web has title 8", async () => TestCase(9));
-// test("Web has title 9", async () => TestCase(10));
-// test("Web has title 10", async () => TestCase(60));
+// Test Cases
+test("has title", async () => RunningMod[activeMode](2));
+test("has title 2", async () => RunningMod[activeMode](5));
+test("has title 3", async () => RunningMod[activeMode](8));
+test("has title 4", async () => RunningMod[activeMode](4));
+test("has title 5", async () => RunningMod[activeMode](10));
+test("has title 6", async () => RunningMod[activeMode](3));
+test("has title 7", async () => RunningMod[activeMode](5));
+test("has title 8", async () => RunningMod[activeMode](60));
+// test("has title 9", async () => RunningMod[activeMode](60));
+// test("has title 10", async () => RunningMod[activeMode](60));
