@@ -1,3 +1,4 @@
+import axios from "axios";
 import { Delay } from "./constant";
 
 export const scroll = async (page1, scrollSize) => {
@@ -105,4 +106,9 @@ export const scroll_Till_end_view = async (page) => {
 
     window.scrollBy(scrollOptions);
   });
+};
+
+export const getTools = async () => {
+  const res = await axios.get("https://backend.toolplate.ai/api/v1/tool");
+  return res?.data?.data?.rows;
 };

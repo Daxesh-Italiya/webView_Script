@@ -49,8 +49,8 @@ export const OpenLink = async (page1, link) => {
 export const OpenTool = async (page1) => {
   await delayInMillisecond(Delay);
 
-  await page1.getByRole("link", { name: "Tools" }).waitFor();
-  await page1.getByRole("link", { name: "Tools" }).click();
+  await page1.getByRole("link", { name: "Tools", exact: true }).waitFor();
+  await page1.getByRole("link", { name: "Tools", exact: true }).click();
   await page1.waitForLoadState();
   await delayInMillisecond(Delay);
 };
@@ -85,14 +85,27 @@ export const OpenBlogFromToggleMenu = async (page1) => {
 };
 
 export const FindDivAndOpen = async (page1, divID) => {
-  await page1
-    .locator(`div:nth-child(2) > .tw-bg-inherit > .card-body`)
-    .waitFor();
-  for (let j = 2; !(await page1.locator(divID).isVisible()); j++) {
+  await page1.waitForLoadState();
+  // await page1
+  //   .locator(`div:nth-child(2) > .tw-bg-inherit > .card-body`)
+  //   .waitFor();
+  // for (let j = 2; !(await page1.locator(divID).isVisible()); j++) {
+  //   await scroll(page1, 500 * (j - 1));
+  // }
+  await delayInMillisecond(Delay * 2);
+  const paragraph = page1.locator(`p:has-text("${divID?.description}")`);
+
+  console.log(paragraph, "paragraph");
+  let isVisible = await paragraph.isVisible();
+
+  for (let j = 2; !isVisible; j++) {
+    isVisible = await paragraph.isVisible();
     await scroll(page1, 500 * (j - 1));
   }
+  await page1.waitForLoadState();
+
   // Open Tool
-  await page1.locator(divID).click();
+  await paragraph.click();
   await page1.waitForLoadState();
   await delayInMillisecond(Delay * 2);
 };
@@ -140,3 +153,12 @@ export const BlogEngagementAction = async (page1) => {
     await page1.close();
   }, 5 * 6 * 1000);
 };
+
+export function shuffleArray(array) {
+  for (let i = array.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1)); // Generate a random index between 0 and i
+
+    // Swap array[i] and array[j]
+    [array[i], array[j]] = [array[j], array[i]];
+  }
+}

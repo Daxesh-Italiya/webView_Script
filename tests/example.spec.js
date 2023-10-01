@@ -12,6 +12,7 @@ const {
   OpenBlogs,
   FindBlogDivAndOpen,
   BlogEngagementAction,
+  shuffleArray,
 } = require("../utils/function");
 const {
   scrollUntilLinkVisible,
@@ -19,6 +20,7 @@ const {
   scroll,
   scrollUp,
   getRandomNumber,
+  getTools,
 } = require("../utils/helper-function");
 
 const TestCaseMobile = async (startIndex = 2) => {
@@ -33,7 +35,9 @@ const TestCaseMobile = async (startIndex = 2) => {
   //   headless: false,
   // });
 
-  for (let i = startIndex; i <= 81; i++) {
+  const allTolls = await getTools();
+  shuffleArray(allTolls);
+  for (let tool of allTolls) {
     // Open New Page
     const page1 = await browser.newPage();
     await delayInMillisecond(Delay);
@@ -59,10 +63,7 @@ const TestCaseMobile = async (startIndex = 2) => {
     await OpenToolFromToggleMenu(page1);
 
     // Scroll Till Tool Appear
-    await FindDivAndOpen(
-      page1,
-      `div:nth-child(${i}) > .tw-bg-inherit > .card-body`
-    );
+    await FindDivAndOpen(page1, tool);
 
     // Page Engagement
     await EngagementAction(page1);
