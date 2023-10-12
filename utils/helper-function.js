@@ -30,38 +30,78 @@ export const scrollUp = async (page1, scrollSize) => {
 
 export const scrollUntilLinkVisible = async (page1, linkText) => {
   let scrollCount = 0;
-  for (
-    let index = 0;
-    !(await page1
-      .getByRole("link", {
-        name: linkText,
-        exact: true,
-      })
-      .isVisible());
-    index++
-  ) {
+  const fixedPartOfURL = "https://toolplate.ai";
+  const selector = `a[href^="${fixedPartOfURL}"]`;
+
+  // Find the link element using the selector
+  let link = await page1.$(selector);
+
+  for (let index = 0; !(await link?.isVisible()); index++) {
+    link = await page1.$(selector);
     await scroll(page1, 300 * (index + 1));
     // Define the complex locator for the button
     scrollCount += 1;
-    const complexLocator = page1
-      .getByRole("button", { name: "More search results" })
-      .getByRole("button", { name: "More search results", exact: true })
-      .filter({ hasText: "More search results" });
+    if (scrollCount % 3 == 0) {
+      const complexLocator = page1
+        .getByRole("button", { name: "More search results" })
+        .getByRole("button", { name: "More search results", exact: true })
+        .filter({ hasText: "More search results" });
 
-    // Check if the element is visible in the viewport
-    const isVisible = await complexLocator.isVisible();
-    console.log(isVisible, "isVisible");
-    if (isVisible) {
-      // If the element is visible, click it
-      await complexLocator.click();
-    } else {
-      // If the element is not visible, handle it as needed (e.g., scroll down)
-      // await page1.keyboard.press("PageDown"); // You can adjust the scrolling action
+      // Check if the element is visible in the viewport
+      const isVisible = await complexLocator.isVisible();
+      console.log(isVisible, "isVisible");
+      if (isVisible) {
+        // If the element is visible, click it
+        await complexLocator.click();
+      } else {
+        // If the element is not visible, handle it as needed (e.g., scroll down)
+        // await page1.keyboard.press("PageDown"); // You can adjust the scrolling action
+      }
     }
+    if (scrollCount > 3) return false;
   }
 
-  console.log("Founded", scrollCount);
+  return true;
 };
+
+// export const scrollUntilLinkVisible = async (page1, linkText) => {
+//   let scrollCount = 0;
+
+//   for (
+//     let index = 0;
+//     !(await page1
+//       .getByRole("link", {
+//         name: linkText,
+//         exact: true,
+//       })
+//       .isVisible());
+//     index++
+//   ) {
+//     await scroll(page1, 300 * (index + 1));
+//     // Define the complex locator for the button
+//     scrollCount += 1;
+//     if (scrollCount % 3 == 0) {
+//       const complexLocator = page1
+//         .getByRole("button", { name: "More search results" })
+//         .getByRole("button", { name: "More search results", exact: true })
+//         .filter({ hasText: "More search results" });
+
+//       // Check if the element is visible in the viewport
+//       const isVisible = await complexLocator.isVisible();
+//       console.log(isVisible, "isVisible");
+//       if (isVisible) {
+//         // If the element is visible, click it
+//         await complexLocator.click();
+//       } else {
+//         // If the element is not visible, handle it as needed (e.g., scroll down)
+//         // await page1.keyboard.press("PageDown"); // You can adjust the scrolling action
+//       }
+//     }
+//     if (scrollCount > 3) return false;
+//   }
+
+//   return true;
+// };
 
 export function delayInMillisecond(time) {
   return new Promise((resolve) => {

@@ -5,7 +5,7 @@ const ActiveKeyword = "toolPlateAiDirectory";
 export const activeMode = "mobile"; //Run in mobile
 // export const activeMode = "desktop" //Run in Desktop
 
-export const Delay = 1000;
+export const Delay = 5000;
 
 const keyWordsRelation = {
   toolplateAi: {
@@ -26,7 +26,7 @@ const keyWordsRelation = {
       "Toolplate.ai- A Comprehensive Ai Tools Directory Toolplate.ai https://toolplate.ai",
   },
   toolPlateAiDirectory: {
-    searchKeyword: "Toolplate ai A Comprehensive Ai Tools Directory",
+    searchKeyword: "toolplate ai tools directory",
     linkText: "Toolplate.ai- A Comprehensive Ai Tools Directory",
     webLinkText:
       "Toolplate.ai- A Comprehensive Ai Tools Directory Toolplate.ai https://toolplate.ai",
@@ -46,7 +46,7 @@ const country = {
   },
   europe: {
     GoogleUrl: "https://www.google.com/",
-    MobileGoogleSearchText: "Google Buscar",
+    MobileGoogleSearchText: "Căutare Google",
     webGoogleSearchText: "Buscar",
   },
 };

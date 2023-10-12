@@ -22,6 +22,7 @@ export const TestCaseMobile = async (startIndex = 2) => {
         "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
     }
   );
+
   // const browser = await chromium.launch({
   //   headless: false,
   // });

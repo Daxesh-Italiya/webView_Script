@@ -22,30 +22,47 @@ export const SearchName = async (
   await page1.getByRole(searchType, { name: SearchText }).waitFor();
   await page1.getByRole(searchType, { name: SearchText }).click();
   await delayInMillisecond(Delay);
-  await page1.getByRole(searchType, { name: SearchText }).type(searchKeyword);
+  for (let i = 0; i < searchKeyword.length; i++) {
+    await page1
+      .getByRole(searchType, { name: SearchText })
+      .type(searchKeyword[i], { delay: searchKeyword[i] === " " ? 500 : 100 });
+  }
+
   await delayInMillisecond(Delay);
   await page1.getByRole(searchType, { name: SearchText }).press("Enter");
   await page1.waitForLoadState();
   await delayInMillisecond(Delay);
 };
 
-export const OpenLink = async (page1, link) => {
-  await page1
-    .getByRole("link", {
-      name: link,
-      exact: true,
-    })
-    .waitFor();
-  await page1
-    .getByRole("link", {
-      name: link,
-      exact: true,
-    })
-    .click();
+export const OpenLink = async (page1) => {
+  const fixedPartOfURL = "https://toolplate.ai";
+  const selector = `a[href^="${fixedPartOfURL}"]`;
+
+  // Find the link element using the selector
+  await page1.waitForSelector(selector);
+  const link = await page1.$(selector);
+
+  await link.click();
   await page1.waitForLoadState();
   await delayInMillisecond(Delay);
 };
 
+// export const OpenLink = async (page1, link) => {
+//   await page1
+//     .getByRole("link", {
+//       name: link,
+//       exact: true,
+//     })
+//     .waitFor();
+//   await page1
+//     .getByRole("link", {
+//       name: link,
+//       exact: true,
+//     })
+//     .click();
+//   await page1.waitForLoadState();
+//   await delayInMillisecond(Delay);
+// };
 export const OpenTool = async (page1) => {
   await delayInMillisecond(Delay);
 
@@ -138,7 +155,7 @@ export const EngagementAction = async (page1) => {
   await delayInMillisecond(Delay * 5);
 
   // setTimeout(async () => {
-  //   await page1.close();
+  await page1.close();
   // }, 5 * 6 * 1000);
 };
 

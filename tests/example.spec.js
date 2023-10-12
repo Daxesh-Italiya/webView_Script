@@ -22,18 +22,16 @@ const {
   getRandomNumber,
   getTools,
 } = require("../utils/helper-function");
+const { browserConfig } = require("../project.config");
 
 const TestCaseMobile = async (startIndex = 2) => {
   const browser = await chromium.launchPersistentContext(
-    "/Users/dax/Library/Application Support/Google/Chrome/Default",
+    browserConfig.downloadLocation,
     {
-      executablePath:
-        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+      executablePath: browserConfig.applicationLocation,
     }
   );
-  // const browser = await chromium.launch({
-  //   headless: false,
-  // });
+  // const browser = await chromium.launch();
 
   const allTolls = await getTools();
   shuffleArray(allTolls);
@@ -49,21 +47,53 @@ const TestCaseMobile = async (startIndex = 2) => {
     await SearchName(
       page1,
       CONSTANT.MobileGoogleSearchText,
-      CONSTANT.searchKeyword,
+      // CONSTANT.searchKeyword,
+      tool?.title + " toolplate.ai",
       "textbox"
     );
 
+    if (
+      await page1
+        .locator("div")
+        .filter({
+          hasText:
+            "About this page Our systems have detected unusual traffic from your computer net",
+        })
+        .first()
+        .isVisible()
+    ) {
+      console.log("Boat Detected", startIndex);
+      // return;
+    }
+
     // Find Toolplate
-    await scrollUntilLinkVisible(page1, CONSTANT.linkText);
+    const isDivFound = await scrollUntilLinkVisible(
+      page1,
+      "Detailed Ai tool Directory with Best ..."
+    );
+
+    if (!isDivFound) {
+      continue;
+    }
 
     // Search name On Google
-    await OpenLink(page1, CONSTANT.linkText);
+    await OpenLink(page1, "Detailed Ai tool Directory with Best ...");
 
-    // Open Navigator
-    await OpenToolFromToggleMenu(page1);
+    const currentUrl = await page1.url();
+    console.log("Current URL:", currentUrl);
 
-    // Scroll Till Tool Appear
-    await FindDivAndOpen(page1, tool);
+    if (currentUrl == "https://toolplate.ai/") {
+      // Open Navigator
+      await OpenToolFromToggleMenu(page1);
+    }
+
+    if (currentUrl == "https://toolplate.ai/tool") {
+      // Open Navigator
+      await OpenToolFromToggleMenu(page1);
+
+      // Scroll Till Tool Appear
+      await FindDivAndOpen(page1, tool);
+    }
 
     // Page Engagement
     await EngagementAction(page1);
@@ -72,10 +102,9 @@ const TestCaseMobile = async (startIndex = 2) => {
 
 const TestCase = async (startIndex = 2) => {
   const browser = await chromium.launchPersistentContext(
-    "/Users/dax/Library/Application Support/Google/Chrome/Default",
+    browserConfig.downloadLocation,
     {
-      executablePath:
-        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+      executablePath: browserConfig.applicationLocation,
     }
   );
   for (let i = startIndex; i <= 81; i++) {
@@ -116,10 +145,9 @@ const TestCase = async (startIndex = 2) => {
 
 const BlogTestCase = async (startIndex = 2) => {
   const browser = await chromium.launchPersistentContext(
-    "/Users/dax/Library/Application Support/Google/Chrome/Default",
+    browserConfig.downloadLocation,
     {
-      executablePath:
-        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+      executablePath: browserConfig.applicationLocation,
     }
   );
   for (let i = startIndex; i <= 81; i++) {
@@ -161,10 +189,9 @@ const BlogTestCase = async (startIndex = 2) => {
 
 const TestCaseMobile_engagementTime = async (startIndex = 2) => {
   const browser = await chromium.launchPersistentContext(
-    "/Users/dax/Library/Application Support/Google/Chrome/Default",
+    browserConfig.downloadLocation,
     {
-      executablePath:
-        "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome",
+      executablePath: browserConfig.applicationLocation,
     }
   );
   // const browser = await chromium.launch({
@@ -252,6 +279,6 @@ test("has title 4", async () => RunningMod[activeMode](4));
 test("has title 5", async () => RunningMod[activeMode](10));
 test("has title 6", async () => RunningMod[activeMode](3));
 test("has title 7", async () => RunningMod[activeMode](5));
-test("has title 8", async () => RunningMod[activeMode](60));
+// test("has title 8", async () => RunningMod[activeMode](60));
 // test("has title 9", async () => RunningMod[activeMode](60));
 // test("has title 10", async () => RunningMod[activeMode](60));
