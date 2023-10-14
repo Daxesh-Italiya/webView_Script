@@ -25,19 +25,17 @@ const {
 const { browserConfig } = require("../project.config");
 
 const TestCaseMobile = async (startIndex = 2) => {
-  const browser = await chromium.launchPersistentContext(
-    browserConfig.downloadLocation,
-    {
-      executablePath: browserConfig.applicationLocation,
-    }
-  );
+  const browser = await chromium.launch({
+    executablePath: browserConfig.applicationLocation,
+  });
   // const browser = await chromium.launch();
 
   const allTolls = await getTools();
   shuffleArray(allTolls);
   for (let tool of allTolls) {
     // Open New Page
-    const page1 = await browser.newPage();
+    const context = await browser.newContext(); // This is an incognito context
+    const page1 = await context.newPage();
     await delayInMillisecond(Delay);
 
     // Open Google
