@@ -85,12 +85,19 @@ const TestCaseMobile = async (startIndex = 2) => {
       await OpenToolFromToggleMenu(page1);
     }
 
-    if (currentUrl == "https://toolplate.ai/tool") {
+    if (
+      currentUrl == "https://toolplate.ai/tool" ||
+      currentUrl == "https://toolplate.ai/"
+    ) {
       // Open Navigator
       await OpenToolFromToggleMenu(page1);
 
       // Scroll Till Tool Appear
       await FindDivAndOpen(page1, tool);
+    }
+
+    if (currentUrl.includes("https://toolplate.ai/blog")) {
+      return;
     }
 
     // Page Engagement
