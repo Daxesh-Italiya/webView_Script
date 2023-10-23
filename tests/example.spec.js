@@ -25,17 +25,20 @@ const {
 const { browserConfig } = require("../project.config");
 
 const TestCaseMobile = async (startIndex = 2) => {
-  const browser = await chromium.launch({
-    executablePath: browserConfig.applicationLocation,
-  });
+  const browser = await chromium.launchPersistentContext(
+    browserConfig.downloadLocation,
+    {
+      executablePath: browserConfig.applicationLocation,
+    }
+  );
   // const browser = await chromium.launch();
 
   const allTolls = await getTools();
   shuffleArray(allTolls);
   for (let tool of allTolls) {
     // Open New Page
-    const context = await browser.newContext(); // This is an incognito context
-    const page1 = await context.newPage();
+    // const context = await browser.newContext(); // This is an incognito context
+    const page1 = await browser.newPage();
     await delayInMillisecond(Delay);
 
     // Open Google
@@ -96,12 +99,10 @@ const TestCaseMobile = async (startIndex = 2) => {
       await FindDivAndOpen(page1, tool);
     }
 
-    if (currentUrl.includes("https://toolplate.ai/blog")) {
-      return;
+    if (!currentUrl.includes("https://toolplate.ai/blog")) {
+      // Page Engagement
+      await EngagementAction(page1);
     }
-
-    // Page Engagement
-    await EngagementAction(page1);
   }
 };
 
