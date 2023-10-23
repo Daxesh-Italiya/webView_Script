@@ -5,7 +5,7 @@ const ActiveKeyword = "toolPlateAiDirectory";
 export const activeMode = "mobile"; //Run in mobile
 // export const activeMode = "desktop" //Run in Desktop
 
-export const Delay = 5000;
+export const Delay = 4000;
 
 const keyWordsRelation = {
   toolplateAi: {
@@ -36,7 +36,7 @@ const keyWordsRelation = {
 const country = {
   japan: {
     GoogleUrl: "https://www.google.com.hk",
-    MobileGoogleSearchText: "Google Search",
+    MobileGoogleSearchText: "Google 検索",
     webGoogleSearchText: "Search",
   },
   other: {
