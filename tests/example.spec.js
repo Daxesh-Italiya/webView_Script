@@ -33,12 +33,13 @@ const TestCaseMobile = async (startIndex = 2) => {
   );
   // const browser = await chromium.launch();
 
-  const allTolls = await getTools();
+  const allTolls = ["Top 46 Video Generator AI Tools & Products in 2024"];
+  const page1 = await browser.newPage();
   shuffleArray(allTolls);
   for (let tool of allTolls) {
     // Open New Page
     // const context = await browser.newContext(); // This is an incognito context
-    const page1 = await browser.newPage();
+
     await delayInMillisecond(Delay);
 
     // Open Google
@@ -49,7 +50,7 @@ const TestCaseMobile = async (startIndex = 2) => {
       page1,
       CONSTANT.MobileGoogleSearchText,
       // CONSTANT.searchKeyword,
-      tool?.title + " toolplate.ai",
+      tool,
       "textbox"
     );
 
@@ -77,7 +78,7 @@ const TestCaseMobile = async (startIndex = 2) => {
       continue;
     }
 
-    // Search name On Google
+    // Open Page
     await OpenLink(page1, "Detailed Ai tool Directory with Best ...");
 
     const currentUrl = await page1.url();
@@ -97,6 +98,11 @@ const TestCaseMobile = async (startIndex = 2) => {
 
       // Scroll Till Tool Appear
       await FindDivAndOpen(page1, tool);
+    }
+
+    if (currentUrl.includes("https://toolplate.ai/tools")) {
+      // Page Engagement
+      await EngagementAction(page1);
     }
 
     if (!currentUrl.includes("https://toolplate.ai/blog")) {

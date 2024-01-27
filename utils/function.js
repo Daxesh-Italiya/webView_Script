@@ -2,6 +2,7 @@ import { Delay } from "./constant";
 import {
   delayInMillisecond,
   scroll,
+  scrollUp,
   scroll_Till_end_view,
   scroll_Till_targeted_view,
 } from "./helper-function";
@@ -140,23 +141,38 @@ export const FindBlogDivAndOpen = async (page1, divID) => {
 
 export const EngagementAction = async (page1) => {
   // await scroll(page1, 650);
-  await scroll_Till_targeted_view(
-    page1.getByText("Ratings", { exact: true }).waitFor()
-  );
+  await scroll(page1, 300);
 
   await delayInMillisecond(Delay * 2);
-  await page1.getByText("Ratings", { exact: true }).waitFor();
-  await page1.getByText("Ratings", { exact: true }).click();
+  await page1.getByRole("heading", { name: "Review" }).waitFor();
+  await page1.getByRole("heading", { name: "Review" }).click();
   await delayInMillisecond(Delay * 3);
-  await page1.getByText("Overview").waitFor();
-  await page1.getByText("Overview").click();
+  await page1.getByRole("heading", { name: "Overview" }).waitFor();
+  await page1.getByRole("heading", { name: "Overview" }).click();
   await delayInMillisecond(Delay * 2);
   await scroll_Till_end_view(page1);
   await delayInMillisecond(Delay * 5);
 
   // setTimeout(async () => {
-  await page1.close();
+  // await page1.close();
   // }, 5 * 6 * 1000);
+};
+
+export const EngagementCategory = async (page1) => {
+  // await scroll(page1, 650);
+  await scroll(page1, 300);
+
+  await delayInMillisecond(Delay * 2);
+
+  await scrollUp(page1, 300);
+  await delayInMillisecond(Delay * 2);
+
+  const links = await page1.$$('[role="link"]');
+  const firstLink = links[0];
+
+  // Now you can interact with the first link, for example, click on it
+  await firstLink.click();
+  await delayInMillisecond(Delay * 2);
 };
 
 export const BlogEngagementAction = async (page1) => {

@@ -58,7 +58,6 @@ export const scrollUntilLinkVisible = async (page1, linkText) => {
         // await page1.keyboard.press("PageDown"); // You can adjust the scrolling action
       }
     }
-    if (scrollCount > 3) return false;
   }
 
   return true;

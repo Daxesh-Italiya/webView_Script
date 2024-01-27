@@ -5,7 +5,7 @@ const ActiveKeyword = "toolPlateAiDirectory";
 export const activeMode = "mobile"; //Run in mobile
 // export const activeMode = "desktop" //Run in Desktop
 
-export const Delay = 4000;
+export const Delay = 1000;
 
 const keyWordsRelation = {
   toolplateAi: {
